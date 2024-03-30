@@ -42,11 +42,17 @@ const getSingleClass: IController = async (req, res, next) => {
       params,
     ]);
 
+    const getStudent = await db.many(
+      `SELECT * FROM student WHERE id_class = $1`,
+      [params]
+    );
+
     return res.status(200).send({
       status: 200,
       message: "Success retrive a class",
-      data: getClass,
+      data: { ...getClass, student: getStudent },
     });
+    
   } catch (error) {
     return res.status(500).json({ message: "Internal server error" });
   }
@@ -85,7 +91,7 @@ const updateSingleClass: IController = async (req, res, next) => {
 
     if (!classExist)
       return res.status(400).json({ status: 400, message: "Bad request" });
-    
+
     await db.query(
       `UPDATE class SET name = $1, start_at = $2, finish_at = $3, updated_at = NOW() WHERE id = $4`,
       [
