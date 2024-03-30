@@ -6,9 +6,9 @@ import jwt from "../utils/jwt";
 const register: IController = async (req, res, next) => {
   const { name, email, password } = await req.body;
   try {
-    const emailExist = await db.query(
-      `SELECT * FROM teacher WHERE email='${email}'`
-    );
+    const emailExist = await db.query(`SELECT * FROM teacher WHERE email=$1`, [
+      email,
+    ]);
 
     if (emailExist.length !== 0)
       return res
@@ -17,7 +17,8 @@ const register: IController = async (req, res, next) => {
 
     const hashed = await Hash.hash(password);
     const createTeacher = await db.result(
-      `INSERT INTO teacher(name, email, password) VALUES ('${name}','${email}','${hashed}')`
+      `INSERT INTO teacher(name, email, password) VALUES ($1,$2,$3)`,
+      [name, email, hashed]
     );
 
     return res
@@ -32,7 +33,8 @@ const login: IController = async (req, res, next) => {
   const { email, password } = await req.body;
   try {
     const loginAccount = await db.oneOrNone(
-      `SELECT * FROM teacher WHERE email = '${email}'`
+      `SELECT * FROM teacher WHERE email = $1`,
+      [email]
     );
 
     if (!loginAccount)

@@ -11,7 +11,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors({ origin: "*" }));
 dotenv.config();
 
-app.use(router);
+app.use("/api/v1", router);
+
+app.use((_, res) => {
+  res.status(404).json({ status: 404, message: "Resource not found" });
+});
+
 const port = process.env.PORT || 1000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
