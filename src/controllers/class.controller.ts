@@ -10,7 +10,7 @@ const createClass: IController = async (req, res, next) => {
     );
 
     return res
-      .status(200)
+      .status(201)
       .json({ status: 200, message: "Success create class" });
   } catch (error) {
     return res.status(500).json({ message: "Internal server error" });
