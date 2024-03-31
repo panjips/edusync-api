@@ -10,7 +10,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors({ origin: "*" }));
 dotenv.config();
-
 app.use("/api/v1", router);
 
 app.use((_, res) => {
@@ -18,8 +17,10 @@ app.use((_, res) => {
 });
 
 const port = process.env.PORT || 1000;
+
+
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  console.log(`Server is running on port ${port} `);
 });
 
 export default app;
