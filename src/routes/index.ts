@@ -5,12 +5,14 @@ import teacherRoute from "./teacher.route";
 import classRoute from "./class.route";
 import classController from "../controllers/class.controller";
 import assignmentRoute from "./assignment.route";
+import gradeRoute from "./grade.route";
 import Authenticate from "../middlewares/authenticate";
 import assignmentController from "../controllers/assignment.controller";
 
 const router = express.Router();
 router.use("/auth", teacherRoute);
 router.use("/", Authenticate.verifyToken, studentRoute);
+router.use("/grade", Authenticate.verifyToken, gradeRoute);
 router.use("/class", Authenticate.verifyToken, classRoute);
 router.use("/assignment", Authenticate.verifyToken, assignmentRoute);
 

@@ -43,9 +43,6 @@ typings/
 # Optional npm cache directory
 .npm
 
-# ignore yarn.lock
-package-lock.json
-
 # Optional eslint cache
 .eslintcache
 
