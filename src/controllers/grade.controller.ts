@@ -1,7 +1,5 @@
 import IController from "../interfaces/IController";
 import db from "../database/connection";
-import { TableName } from "pg-promise";
-import { query } from "express";
 
 const tableName = "grade";
 
