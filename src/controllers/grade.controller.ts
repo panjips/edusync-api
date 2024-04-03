@@ -49,7 +49,7 @@ const getAllGradeInAssignment: IController = async (req, res) => {
 
 const updateSingleGrade: IController = async (req, res) => {
   try {
-    const { grade } = await req.body;
+    const { grade, id_student, id_assignment } = await req.body;
     const params = req.params.id;
     console.log({ grade, params });
     const prevGrade = await db.query(
@@ -62,9 +62,16 @@ const updateSingleGrade: IController = async (req, res) => {
 
     await db.query(
       `UPDATE ${tableName} 
-                   SET grade = $1
-                   WHERE id = $2`,
-      [grade || prevGrade, params]
+                   SET grade = $1,
+                   id_student = $2, 
+                  id_assignment = $3
+                   WHERE id = $4`,
+      [
+        grade || prevGrade.grade,
+        id_student || prevGrade.id_student,
+        id_assignment || prevGrade.id_assignment,
+        params,
+      ]
     );
 
     const updatedStudent = await db.query(
@@ -86,12 +93,10 @@ const deleteGrade: IController = async (req, res) => {
   try {
     const params = req.params.id;
     await db.query(`DELETE FROM ${tableName} WHERE id = $1`, [params]);
-    return res
-      .status(200)
-      .json({
-        status: 200,
-        message: `successfully delete grade with id ${params} `,
-      });
+    return res.status(200).json({
+      status: 200,
+      message: `successfully delete grade with id ${params} `,
+    });
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -101,5 +106,5 @@ export default {
   postGrade,
   getAllGradeInAssignment,
   updateSingleGrade,
-  deleteGrade
+  deleteGrade,
 };
